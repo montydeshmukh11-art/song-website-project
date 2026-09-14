@@ -1,13 +1,13 @@
 'use client'
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState,Suspense } from "react";
 import { EyeIcon, EyeOff } from 'lucide-react'
 import axios from "axios";
 import { useSearchParams } from "next/navigation";
 import ForgotPasswordModal from "@/components/ForgotPassModal";
 
-export default function LoginPage() {
+function LoginPage() {
 
     const [identifier, setIdentifier] = useState<string>(''); // Email or Username
     const [password, setPassword] = useState<string>('');
@@ -150,4 +150,16 @@ export default function LoginPage() {
             </div>
         </div>
     );
+}
+
+export default function LoginForm() {
+    return (
+        <Suspense fallback={
+            <div className="flex justify-center items-center min-h-[calc(100dvh-5rem)]">
+                <p className="text-white/50">Loading...</p>
+            </div>
+        }>
+            <LoginPage />
+        </Suspense>
+    )
 }
