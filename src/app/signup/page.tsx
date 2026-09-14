@@ -1,5 +1,5 @@
 'use client'
-import { useRouter } from "next/navigation";
+
 import Link from "next/link";
 import { useState } from "react";
 import {EyeIcon,EyeOff} from 'lucide-react'
@@ -17,8 +17,6 @@ export default function SignUp (){
     const [loading,setLoading] = useState(false)
     const [error,setError] = useState('')
     const [emailSent,setEmailSent] = useState(false)
- 
-    const router = useRouter()
 
     const SignUp = async ()=>{
 

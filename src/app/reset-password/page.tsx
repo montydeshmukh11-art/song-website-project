@@ -1,11 +1,11 @@
 'use client'
-import { useState } from 'react'
+import { useState,Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { EyeIcon, EyeOff, CheckCircle2 } from 'lucide-react'
 import axios from 'axios'
 
-export default function ResetPasswordPage() {
+function ResetPasswordPage() {
     const router = useRouter()
     const searchParams = useSearchParams()
     const token = searchParams.get('token')
@@ -159,4 +159,18 @@ export default function ResetPasswordPage() {
             </div>
         </div>
     )
+}
+
+export default function ResetPassword (){
+
+        return (
+            <Suspense fallback={
+                <div className="flex justify-center items-center min-h-[calc(100dvh-5rem)]">
+                    <p className="text-white/50">Loading...</p>
+                </div>
+            }>
+                <ResetPasswordPage />
+            </Suspense>
+        )
+
 }
