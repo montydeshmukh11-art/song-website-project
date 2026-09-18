@@ -2,6 +2,12 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient as createServerClient } from "@/utils/supabase/server";
 import { createClient as createAdminClient } from "@supabase/supabase-js";
 
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type',
+}
+
 export async function POST (req:NextRequest){
 
     try {
@@ -19,7 +25,7 @@ export async function POST (req:NextRequest){
                 process.env.NEXT_SUPABASE_SERVICE_ROLE_KEY!
             )
 
-            const {data:userData,error:userError} = await supabaseAdmin
+            const {data:userData} = await supabaseAdmin
                             .from('user')
                             .select('email')
                             .eq('username',identifier)
@@ -30,7 +36,9 @@ export async function POST (req:NextRequest){
             }else{
                 return NextResponse.json(
                     {error:'User not found with the username'},
-                    {status:404}
+                    {
+                        status:404,headers:corsHeaders
+                    }
                 )
             }
         }
@@ -43,7 +51,9 @@ export async function POST (req:NextRequest){
             if(error){
                 return NextResponse.json(
                     {error:error.message},
-                    {status:404}
+                    {
+                        status:404,headers:corsHeaders
+                    }
                 )
             }
 
@@ -51,14 +61,33 @@ export async function POST (req:NextRequest){
                 {
                     success:true,
                     message:'User logged in successfully',
-                    user:data.user
+                    user:{
+                        id:data.user.id,
+                        email:data.user.email,
+                        username:data.user.user_metadata?.username || identifier
+                    },
+                    token:data.session.access_token
                 },
-                {status:200}
+                {
+                    status:200,headers:corsHeaders
+                }
             )
 
     } catch (error:any){
         return NextResponse.json(
-            {error:error.message}
+            {error:error.message},
+            {
+                status:400,headers:corsHeaders
+            }
         )
     }
+}
+
+
+export async function OPTIONS(){
+    
+    return NextResponse.json({},{
+      headers:corsHeaders
+    })
+
 }

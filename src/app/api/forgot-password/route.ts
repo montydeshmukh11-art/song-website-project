@@ -3,6 +3,12 @@ import { sendPasswordResetEmail } from "@/lib/resetPass-mailer";
 import crypto from 'crypto'
 import { NextRequest, NextResponse } from "next/server";
 
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type',
+}
+
 export async function POST (req:NextRequest){
 
    try {
@@ -13,7 +19,7 @@ export async function POST (req:NextRequest){
         console.error('Enter the email')
         return NextResponse.json(
             {error:'Email is required'},
-            {status:404}
+            {status:404,headers:corsHeaders}
         )
     }
 
@@ -32,7 +38,7 @@ export async function POST (req:NextRequest){
         // We return a 404 so the frontend knows it failed during testing.
         return NextResponse.json(
             { error: 'Email not found in database' },
-            { status: 404 }
+            { status: 404 ,headers:corsHeaders}
         )
     }
 
@@ -56,7 +62,7 @@ export async function POST (req:NextRequest){
         console.error("Insert Error: ", insertError)
         return NextResponse.json(
             {error:'Database error: Did you create the password_reset table?'},
-            {status: 500}
+            {status: 500,headers:corsHeaders}
         )
     }
 
@@ -66,17 +72,20 @@ export async function POST (req:NextRequest){
 
     await sendPasswordResetEmail(email,resetLink)
 
-    return NextResponse.json({
+    return NextResponse.json(
+        {
         success:true,
         message:'If the email is registered the email has been sent'
-    })
+    },
+    {
+        status:200,headers:corsHeaders
+    }
+)
 
    } catch (error:any) {
     return NextResponse.json(
         {error:error.message || 'Something went wrong trying to send email'},
-        {status:500}
+        {status:500,headers:corsHeaders}
     )
    }
-
-
 }

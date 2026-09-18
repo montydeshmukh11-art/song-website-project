@@ -1,7 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
-import { error } from "console";
 import { NextRequest, NextResponse } from "next/server";
-
 
 export async function POST (req:NextRequest){
 
@@ -64,7 +62,7 @@ export async function POST (req:NextRequest){
 
         }
 
-        const {data:{users},error:usersError} = await supabaseAdmin.auth.admin.listUsers()
+        const {data:{users}} = await supabaseAdmin.auth.admin.listUsers()
 
         const authUser = users.find(u=>u.email === resetRecord.email)
 
@@ -93,10 +91,16 @@ export async function POST (req:NextRequest){
                      .delete()
                      .eq('token',token)
 
-     return NextResponse.json({ 
+     return NextResponse.json(
+        { 
         success: true,
         message: 'Password updated successfully!'
-         })
+         },
+         {
+            status:200,
+            headers:{'Access-Control-Allow-Origin':'*'}
+         }
+        )
 
     } catch (error: any) {
         return NextResponse.json(
@@ -104,5 +108,17 @@ export async function POST (req:NextRequest){
             { status: 500 }
         )
     }
+
+}
+
+export async function Options(){
+    
+    return NextResponse.json({},{
+        headers:{
+            'Access-Control-Allow-Origin':'*',
+            'Access-Control-Allow-Methods':'POST,Options',
+            'Access-Control-Allow-Headers':'Content-Type'
+        }
+    })
 
 }

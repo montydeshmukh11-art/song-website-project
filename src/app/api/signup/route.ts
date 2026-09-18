@@ -3,6 +3,12 @@ import { NextRequest, NextResponse } from "next/server"
 import { sendVerificationEmail } from "@/lib/Verification-mailer"
 import crypto from 'crypto'
 
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type',
+}
+
 export async function POST(req:NextRequest){
 
     try {
@@ -24,7 +30,7 @@ export async function POST(req:NextRequest){
         if(existingUser){
             return NextResponse.json(
                 {error:"User already exists"},
-                {status:400}
+                {status:400,headers:corsHeaders}
             )
         }
 
@@ -38,7 +44,7 @@ export async function POST(req:NextRequest){
         if(existingAuth){
             return NextResponse.json(
                 {error:'Email already registered'},
-                {status:400}
+                {status:400,headers:corsHeaders}
             )
         }
 
@@ -66,7 +72,7 @@ export async function POST(req:NextRequest){
         if(insertError){
             return NextResponse.json(
                 {error:'Failed to process signup'},
-                {status:500}
+                {status:500,headers:corsHeaders}
             )
         }
 
@@ -79,16 +85,26 @@ export async function POST(req:NextRequest){
 
          await sendVerificationEmail(email,username,verificationLink)
 
-         return NextResponse.json({
+         return NextResponse.json(
+            {
             success:true,
             message:'Verification email has been sent'
-         }
+            },{
+                status:200,
+                headers:corsHeaders
+            }
         )
 
     } catch (error:any){
         return NextResponse.json(
             {error:error.message || 'Something went wrong while signing up'},
-            {status:500}
+            {status:500,headers:corsHeaders}
         )
     }
+}
+
+export async function Options(){
+    return NextResponse.json({},{
+     headers:corsHeaders
+    })
 }
