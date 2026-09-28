@@ -68,36 +68,36 @@ export default function GlobalPlayer() {
     }, [volume])
 
     //Keyboard commands handler
-    useEffect(()=>{
+    useEffect(() => {
 
-        const handleKeyDown = (e:KeyboardEvent)=>{
+        const handleKeyDown = (e: KeyboardEvent) => {
             const tag = (e.target as HTMLElement).tagName
-           //If typing in search area then do noting
-            if(tag ==='INPUT' || tag === 'TEXTAREA')return
+            //If typing in search area then do noting
+            if (tag === 'INPUT' || tag === 'TEXTAREA') return
 
             switch (e.key) {
                 case ' ': e.preventDefault()
-                 if(currentSong) setIsPlaying(!isPlaying)
+                    if (currentSong) setIsPlaying(!isPlaying)
                     break;
 
-                 case 'ArrowUp' : e.preventDefault()
-                 setVolume(Math.min(1,volume+0.1))
-                 break
+                case 'ArrowUp': e.preventDefault()
+                    setVolume(Math.min(1, volume + 0.1))
+                    break
 
-                 case 'ArrowDown' : e.preventDefault()
-                 setVolume(Math.max(0,volume-0.1))
-                 break
+                case 'ArrowDown': e.preventDefault()
+                    setVolume(Math.max(0, volume - 0.1))
+                    break
 
-                 case 'ArrowRight' : e.preventDefault()
-                 playNext()
-                 break
+                case 'ArrowRight': e.preventDefault()
+                    playNext()
+                    break
 
-                 case 'ArrowLeft' : e.preventDefault()
-                 playPrev()
-                 break
-            
-                 case 'm':
-                 case 'M':
+                case 'ArrowLeft': e.preventDefault()
+                    playPrev()
+                    break
+
+                case 'm':
+                case 'M':
                     e.preventDefault()
                     toggleMute()
                     break
@@ -106,10 +106,10 @@ export default function GlobalPlayer() {
 
         }
 
-        window.addEventListener('keydown',handleKeyDown)
-        return ()=>window.removeEventListener('keydown', handleKeyDown)
+        window.addEventListener('keydown', handleKeyDown)
+        return () => window.removeEventListener('keydown', handleKeyDown)
 
-    },[isPlaying,currentSong,volume,playNext, playPrev, setIsPlaying, setVolume])
+    }, [isPlaying, currentSong, volume, playNext, playPrev, setIsPlaying, setVolume])
 
     const toggleMute = () => {
         if (volume === 0) setVolume(1)
@@ -161,8 +161,8 @@ export default function GlobalPlayer() {
                     onChange={handleSeek}
                     className="absolute inset-0 w-full h-full opacity-0 z-10 cursor-pointer"
                 />
-                <div 
-                    className="h-full bg-primary transition-all duration-100" 
+                <div
+                    className="h-full bg-primary transition-all duration-100"
                     style={{ width: `${duration ? (progress / duration) * 100 : 0}%` }}
                 />
             </div>
@@ -212,10 +212,10 @@ export default function GlobalPlayer() {
 
                     <button
                         onClick={toggleShuffle}
-                        className={`hidden sm:block p-2 rounded-full transition-all ${isShuffled ? 'text-primary' : 'text-muted-foreground hover:text-white'} hover:bg-white/10`}
+                        className={`p-2 rounded-full transition-all ${isShuffled ? 'text-primary' : 'text-muted-foreground hover:text-white'} hover:bg-white/10`}
                         title="Shuffle"
                     >
-                        <Shuffle size={18} />
+                        <Shuffle size={16} className="sm:w-[18px] sm:h-[18px]" />
                     </button>
 
                     <button
@@ -245,15 +245,15 @@ export default function GlobalPlayer() {
                     <button
                         onClick={cycleRepeat}
                         title={`Repeat: ${repeatMode}`}
-                        className={`hidden sm:block p-2 rounded-full transition-all ${repeatMode !== 'none' ? 'text-primary' : 'text-muted-foreground hover:text-white'} hover:bg-white/10`}
+                        className={`p-2 rounded-full transition-all ${repeatMode !== 'none' ? 'text-primary' : 'text-muted-foreground hover:text-white'} hover:bg-white/10`}
                     >
-                        {repeatMode === 'one' ? <Repeat1 size={18} /> : <Repeat size={18} />}
+                        {repeatMode === 'one' ? <Repeat1 size={16} className="sm:w-[18px] sm:h-[18px]" /> : <Repeat size={16} className="sm:w-[18px] sm:h-[18px]" />}
                     </button>
 
                 </div>
 
-                {/* Modern Seekbar for Desktop (with timestamps) */}
-                <div className="hidden sm:flex items-center w-full gap-3 text-xs text-muted-foreground font-medium">
+                {/* Modern Seekbar (with timestamps) */}
+                <div className="flex items-center w-full gap-3 text-xs text-muted-foreground font-medium">
                     <span className="w-10 text-right">{formatTime(progress)}</span>
                     <input
                         type="range"
@@ -267,8 +267,8 @@ export default function GlobalPlayer() {
                 </div>
             </div>
 
-            {/* Right: Volume (Desktop) */}
-            <div className="hidden sm:flex items-center justify-end w-1/4 min-w-[150px] text-muted-foreground group">
+            {/* Right: Volume */}
+            <div className="hidden vsm:flex items-center justify-end w-1/4 min-w-[100px] sm:min-w-[150px] text-muted-foreground group">
                 {/* Volume Button */}
                 <button
                     onClick={toggleMute}

@@ -234,7 +234,7 @@ function NavBar() {
                     </div>
                 ) : (
                     <div className="flex items-center gap-1.5 sm:gap-2">
-                        <Link href="/login" className="text-muted-foreground hover:text-white font-semibold px-2.5 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-base transition-colors hidden sm:block">
+                        <Link href="/login" className="text-muted-foreground hover:text-white font-semibold px-2.5 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-base transition-colors">
                             Log in
                         </Link>
                         <Link href="/signup" className="bg-primary hover:bg-primary/90 text-white font-bold px-3.5 py-1.5 sm:px-6 sm:py-2.5 text-xs sm:text-sm rounded-full hover:scale-105 transition-all shadow-[0_0_20px_rgba(139,92,246,0.4)]">

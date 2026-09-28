@@ -26,7 +26,9 @@
   --color-muted-foreground: var(--muted-foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-  --color-auth-button:var(--auth-button)
+  --color-auth-button:var(--auth-button);
+  --breakpoint-xs: 440px;
+  --breakpoint-vsm: 470px;
 }
 
 body {
